@@ -4,7 +4,7 @@ using System.Collections.Generic;
 public class Deck
 {
     int numberOfDecks, maxNumberOfCards;
-    Queue<int> deck;
+    Queue<int> deck = new Queue<int>();
 
     public Deck(int _numberOfDecks, int _maxNumberOfCards)
     {
