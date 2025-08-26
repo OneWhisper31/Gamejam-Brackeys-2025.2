@@ -17,7 +17,10 @@ public class Entity : MonoBehaviour
     {
         CurrentHealth = initialHealth;
 
-        OnStartTurn += ()=> IsPlaying = true;
+        OnStartTurn += ()=> {
+		IsPlaying = true;
+		currentCount = 0;
+	}
         OnFinishTurn += () => IsPlaying = false;
     }
 
@@ -28,7 +31,7 @@ public class Entity : MonoBehaviour
         
         currentCount = Mathf.Clamp(currentCount+GameManager.instance.Deck.GetCard(),0,GameManager.instance.BustValue);
 
-        if (GameManager.instance.BustValue >= currentCount)
+        if (currentCount >= GameManager.instance.BustValue)
             TakeDamage(Mathf.Clamp(rewardMultiply,1,10));
     }
 
@@ -36,6 +39,14 @@ public class Entity : MonoBehaviour
     {
         GameManager.instance?.PassTurn();
     }
+protected virtual void DoubleDown(){
+
+	rewardMultiply++;
+	GetCard();
+	if (currentCount < GameManager.instance.BustValue)
+		Stand();
+
+}
 
     protected virtual void TakeDamage(int damage)
     {
