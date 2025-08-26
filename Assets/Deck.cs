@@ -27,10 +27,6 @@ public class Deck
             int iParsed = i - (i / 12 * 12) + 1;
             deckUnshuffled.Add(iParsed);
         }
-        foreach (var item in deckUnshuffled)
-        {
-            Debug.Log(item);
-        }
         deck = ShuffleCards(deckUnshuffled);
     }
     Queue<int> ShuffleCards(List<int> cards)
