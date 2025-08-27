@@ -1,16 +1,33 @@
 using UnityEngine;
 using System;
+using Unity.VisualScripting;
 
 public class Entity : MonoBehaviour
 {
     [Range(0,10),SerializeField]private int initialHealth;
     
     public int CurrentHealth { get; private set; }
-    public int CurrentCount { get; private set; }
+    public int CardsDealt { get; private set; }
     private int rewardMultiply;
     
     public bool IsPlaying { get; protected set; }
+    
+    public bool HasAnAs { get; protected set; }
+    public bool HasTwoAs { get; protected set; }
     public bool StopTurn { get; protected set; }
+    
+    public int CurrentCount
+    {
+        get
+        {
+            var output = 0;
+            if (HasAnAs && _currentCount <= 11)//as mechanic
+                output = _currentCount + 10;
+            return Mathf.Clamp(output,0,21);
+        } 
+        private set=>_currentCount = value;
+    } //valueCounter
+    private int _currentCount;
 
     public Action OnStartTurn, OnFinishTurn, OnStartRound, OnFinishRound;
 
@@ -23,8 +40,11 @@ public class Entity : MonoBehaviour
         OnFinishTurn += () => IsPlaying = false;
         OnStartRound += () =>
         {
-            StopTurn = false;
             CurrentCount = 0;
+            CardsDealt = 0;
+            StopTurn = false;
+            GetCard();
+            GetCard();
         };
         OnFinishRound += () => StopTurn = true;
     }
@@ -42,14 +62,34 @@ public class Entity : MonoBehaviour
     {
         if(GameManager.instance==null)
             return;
-
-        CurrentCount += GameManager.instance.Deck.GetCard();
-        Debug.Log($"{gameObject.name} hit, Value {CurrentCount}");
-
-        GameManager.instance?.PassTurn();
-
-        if (CurrentCount > GameManager.instance.BustValue)
+        
+        var nextCard = GameManager.instance.Deck.GetCard();
+        Debug.Log($"Cart Dealt {nextCard}");
+        
+        CurrentCount += nextCard;
+        CardsDealt++;
+        
+        /*As Mechanic*/
+        if (nextCard == 1)
+        {
+            if(!HasAnAs)
+                HasAnAs = true;
+            else
+                HasTwoAs = true;
+        }
+            
+        if(HasAnAs && !HasTwoAs && CurrentCount-10 <= 9)
+            Debug.Log($"{gameObject.name} hit, Value {CurrentCount-10 }/{CurrentCount/*As mechanic*/}");
+        else
+            Debug.Log($"{gameObject.name} hit, Value {CurrentCount }");
+        
+        if(CurrentCount == GameManager.instance.BustValue)
+            Stand();
+        else if (CurrentCount > GameManager.instance.BustValue)
             TakeDamage(Mathf.Clamp(rewardMultiply,1,10));
+        else
+            GameManager.instance?.PassTurn();
+
     }
 
     protected virtual void Stand()
@@ -60,6 +100,9 @@ public class Entity : MonoBehaviour
     }
     protected virtual void DoubleDown(){
 
+        if(CardsDealt>3)
+            return;
+        
         Debug.Log($"{gameObject.name} double down, Value {CurrentCount}");
         rewardMultiply++;
 	    GetCard();
@@ -77,7 +120,9 @@ public class Entity : MonoBehaviour
         if(exeFinishRound)
             OnFinishRound?.Invoke();
 
-        Debug.Log($"{gameObject.name} take damage, currentHealth {CurrentHealth}");
+        GameManager.instance?.IsEndOfRound();
+        
+        Debug.Log($"<color=blue>{gameObject.name} take damage, currentHealth {CurrentHealth} dead</color>");
 
         if (CurrentHealth <= 0)
             Dead();

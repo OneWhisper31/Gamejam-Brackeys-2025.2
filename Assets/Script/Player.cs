@@ -11,7 +11,10 @@ public class Player : Entity
         {
             getCardB.interactable = true;
             standB.interactable = true;
-            doubleDownB.interactable = true;
+            if(CardsDealt<=2)
+                doubleDownB.interactable = true;
+            else
+                doubleDownB.interactable = false;
         };
         OnFinishTurn += () =>
         {

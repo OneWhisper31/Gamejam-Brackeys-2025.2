@@ -82,7 +82,7 @@ public class GameManager : MonoBehaviour
 
             if(damagedPlayers.Length>0)
                 foreach (var x in damagedPlayers)
-                    x.TakeDamage(exeFinishRound:false);
+                    x.TakeDamage();
 
             foreach (var x in players)
                 x.OnStartRound?.Invoke();

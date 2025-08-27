@@ -776,8 +776,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <BustValue>k__BackingField: 21
-  numberOfDecks: 3
-  maxNumberOfCards: 12
+  numberOfDecks: 2
+  maxNumberOfCards: 3
   players:
   - {fileID: 606073086}
   - {fileID: 1225438890}
@@ -1290,7 +1290,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f20f2f2ce4de47a4297f30d80a8d515a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  initialHealth: 2
+  initialHealth: 9
 --- !u!4 &1225438891
 Transform:
   m_ObjectHideFlags: 0

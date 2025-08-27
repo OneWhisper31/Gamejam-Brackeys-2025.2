@@ -1,20 +1,26 @@
+using System.Collections;
 using UnityEngine;
 
 public class Enemy : Entity
 {
-    
-
-    // Update is called once per frame
-    void Update()
+	protected override void _Start()
+	{
+		StartCoroutine(_Update());
+	}
+    IEnumerator _Update()
     {
-        if (IsPlaying){
-
-	   if(Random.Range(0, 100) <= 50)
-		GetCard();
-           else
-            	Stand();
-
-	}  
-            
+	    while (true)
+	    {
+		    if (IsPlaying)
+		    {
+			    yield return new WaitForSeconds(1f);
+			    
+			    if(Random.Range(0, 100) <= 50)
+				    GetCard();
+			    else
+				    Stand(); 
+		    }
+		    yield return new WaitForEndOfFrame();
+	    }
     }
 }
