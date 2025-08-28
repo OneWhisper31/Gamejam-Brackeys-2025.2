@@ -1,6 +1,5 @@
 using UnityEngine;
 using System;
-using Unity.VisualScripting;
 
 public class Entity : MonoBehaviour
 {
@@ -15,6 +14,8 @@ public class Entity : MonoBehaviour
     public bool HasAnAs { get; protected set; }
     public bool HasTwoAs { get; protected set; }
     public bool StopTurn { get; protected set; }
+
+    [SerializeField] private Hand hand;
     
     public int CurrentCount
     {
@@ -131,6 +132,7 @@ public class Entity : MonoBehaviour
             1+rewardMultiply;
 
         Debug.Log($"<color=blue>{gameObject.name} take damage, currentHealth {CurrentHealth} dead</color>");
+        hand?.RemoveFingers();
 
         if (CurrentHealth <= 0)
             Dead();

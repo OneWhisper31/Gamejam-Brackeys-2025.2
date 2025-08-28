@@ -1759,7 +1759,73 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      spritesheet_handgesture(v1.0)_0: 4932358356069471148
+      spritesheet_handgesture(v1.0)_1: 8127130818473455401
+      spritesheet_handgesture(v1.0)_10: -2932412629667907701
+      spritesheet_handgesture(v1.0)_11: 1352781813872707090
+      spritesheet_handgesture(v1.0)_12: -7566065714524891253
+      spritesheet_handgesture(v1.0)_13: -9166346735337533069
+      spritesheet_handgesture(v1.0)_14: -3979205214432370983
+      spritesheet_handgesture(v1.0)_15: 2568807253747536020
+      spritesheet_handgesture(v1.0)_16: 2746712528537843963
+      spritesheet_handgesture(v1.0)_17: 1172018319354783556
+      spritesheet_handgesture(v1.0)_18: 4466907219559714444
+      spritesheet_handgesture(v1.0)_19: -6696662220133964212
+      spritesheet_handgesture(v1.0)_2: 1648629840979515316
+      spritesheet_handgesture(v1.0)_20: -4602122978854403150
+      spritesheet_handgesture(v1.0)_21: 2470158913323354210
+      spritesheet_handgesture(v1.0)_22: 2694100921589394781
+      spritesheet_handgesture(v1.0)_23: -8685150234462335859
+      spritesheet_handgesture(v1.0)_24: -4070099974503304765
+      spritesheet_handgesture(v1.0)_25: 3715035653892733224
+      spritesheet_handgesture(v1.0)_26: 8184710862662127932
+      spritesheet_handgesture(v1.0)_27: -404255455730036254
+      spritesheet_handgesture(v1.0)_28: 6079793337106206452
+      spritesheet_handgesture(v1.0)_29: -8944161516830295302
+      spritesheet_handgesture(v1.0)_3: 5440748654644799995
+      spritesheet_handgesture(v1.0)_30: -7873767928873827305
+      spritesheet_handgesture(v1.0)_31: -5633062433185780234
+      spritesheet_handgesture(v1.0)_32: -1531461973338972753
+      spritesheet_handgesture(v1.0)_33: -8181693156470477815
+      spritesheet_handgesture(v1.0)_34: -8207865152157800091
+      spritesheet_handgesture(v1.0)_35: 2562960071552732530
+      spritesheet_handgesture(v1.0)_36: -4867956324249656867
+      spritesheet_handgesture(v1.0)_37: 9143332015005000939
+      spritesheet_handgesture(v1.0)_38: 6172802731245948151
+      spritesheet_handgesture(v1.0)_39: 805255636000445797
+      spritesheet_handgesture(v1.0)_4: -467262713254539669
+      spritesheet_handgesture(v1.0)_40: -1742810172260607736
+      spritesheet_handgesture(v1.0)_41: -6472838759706355368
+      spritesheet_handgesture(v1.0)_42: 1908195530052906313
+      spritesheet_handgesture(v1.0)_43: 4048068776230737532
+      spritesheet_handgesture(v1.0)_44: -6128294390641671939
+      spritesheet_handgesture(v1.0)_45: -7333383690630252612
+      spritesheet_handgesture(v1.0)_46: -6080553457014340184
+      spritesheet_handgesture(v1.0)_47: 7139302034650689618
+      spritesheet_handgesture(v1.0)_48: 3289943364223373513
+      spritesheet_handgesture(v1.0)_49: -2766564218953666401
+      spritesheet_handgesture(v1.0)_5: 7942053701850492661
+      spritesheet_handgesture(v1.0)_50: 2223863132630572342
+      spritesheet_handgesture(v1.0)_51: 4339834686333666166
+      spritesheet_handgesture(v1.0)_52: 6988047691926461431
+      spritesheet_handgesture(v1.0)_53: 219352011070035827
+      spritesheet_handgesture(v1.0)_54: 2867339634714010278
+      spritesheet_handgesture(v1.0)_55: 2951337077959240604
+      spritesheet_handgesture(v1.0)_56: 519143156860521894
+      spritesheet_handgesture(v1.0)_57: -305844413996329438
+      spritesheet_handgesture(v1.0)_58: 655048772072412654
+      spritesheet_handgesture(v1.0)_59: 9143332659798443703
+      spritesheet_handgesture(v1.0)_6: -7799052503104023134
+      spritesheet_handgesture(v1.0)_60: 5778625362624598036
+      spritesheet_handgesture(v1.0)_61: 8131032020586364522
+      spritesheet_handgesture(v1.0)_62: -3806989378404194706
+      spritesheet_handgesture(v1.0)_63: -6081064898407138035
+      spritesheet_handgesture(v1.0)_64: 2966293222512635756
+      spritesheet_handgesture(v1.0)_65: 1284254894957519158
+      spritesheet_handgesture(v1.0)_7: 4954963617416898833
+      spritesheet_handgesture(v1.0)_8: -528852241365386581
+      spritesheet_handgesture(v1.0)_9: 9206533935124144960
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
