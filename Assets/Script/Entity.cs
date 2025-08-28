@@ -20,10 +20,9 @@ public class Entity : MonoBehaviour
     {
         get
         {
-            var output = 0;
             if (HasAnAs && _currentCount <= 11)//as mechanic
-                output = _currentCount + 10;
-            return Mathf.Clamp(output,0,21);
+                return _currentCount+10;
+            return _currentCount;
         } 
         private set=>_currentCount = value;
     } //valueCounter
@@ -43,10 +42,16 @@ public class Entity : MonoBehaviour
             CurrentCount = 0;
             CardsDealt = 0;
             StopTurn = false;
+            IsPlaying = false;
+            HasAnAs = false;
+            HasTwoAs = false;
             GetCard();
             GetCard();
         };
-        OnFinishRound += () => StopTurn = true;
+        OnFinishRound += () =>
+        {
+            StopTurn = true;
+        };
     }
     private void Start()
     {
@@ -65,6 +70,12 @@ public class Entity : MonoBehaviour
         
         var nextCard = GameManager.instance.Deck.GetCard();
         Debug.Log($"Cart Dealt {nextCard}");
+
+        if (nextCard == 0)
+        {
+            Debug.Log("Hability");
+            return;
+        }
         
         CurrentCount += nextCard;
         CardsDealt++;
@@ -86,7 +97,10 @@ public class Entity : MonoBehaviour
         if(CurrentCount == GameManager.instance.BustValue)
             Stand();
         else if (CurrentCount > GameManager.instance.BustValue)
-            TakeDamage(Mathf.Clamp(rewardMultiply,1,10));
+        {
+            Debug.Log("Bust");
+            Stand();//TakeDamage(Mathf.Clamp(rewardMultiply,1,10));
+        }
         else
             GameManager.instance?.PassTurn();
 
@@ -106,8 +120,7 @@ public class Entity : MonoBehaviour
         Debug.Log($"{gameObject.name} double down, Value {CurrentCount}");
         rewardMultiply++;
 	    GetCard();
-	    if (CurrentCount < GameManager.instance.BustValue)
-	    	Stand();
+	    Stand();
 
     }
 
@@ -117,15 +130,13 @@ public class Entity : MonoBehaviour
             damage:
             1+rewardMultiply;
 
-        if(exeFinishRound)
-            OnFinishRound?.Invoke();
-
-        GameManager.instance?.IsEndOfRound();
-        
         Debug.Log($"<color=blue>{gameObject.name} take damage, currentHealth {CurrentHealth} dead</color>");
 
         if (CurrentHealth <= 0)
             Dead();
+        else if(exeFinishRound)
+            OnFinishRound?.Invoke();
+        
     }
 
     protected virtual void Dead()

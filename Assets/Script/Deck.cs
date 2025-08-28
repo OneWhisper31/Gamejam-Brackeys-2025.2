@@ -4,13 +4,14 @@ using System.Collections.Generic;
 
 public class Deck
 {
-    int numberOfDecks, maxNumberOfCards;
+    int numberOfDecks, maxNumberOfCards, numberOfPowerUps;
     Queue<int> deck = new Queue<int>();
 
-    public Deck(int _numberOfDecks, int _maxNumberOfCards)
+    public Deck(int _numberOfDecks, int _maxNumberOfCards, int _numberOfPowerUps)
     {
         numberOfDecks = _numberOfDecks;
         maxNumberOfCards = _maxNumberOfCards;
+        numberOfPowerUps = _numberOfPowerUps;
     }
     
     public int GetCard()
@@ -28,6 +29,8 @@ public class Deck
             int iParsed = Mathf.Clamp(i - (i / maxNumberOfCards * maxNumberOfCards) + 1,1,10);
             deckUnshuffled.Add(iParsed);
         }
+        for (int i = 0; i < numberOfPowerUps; i++)
+            deckUnshuffled.Add(0);
         deck = ShuffleCards(deckUnshuffled);
     }
     Queue<int> ShuffleCards(List<int> cards)

@@ -9,7 +9,7 @@ public class GameManager : MonoBehaviour
     [field:SerializeField] public int BustValue { get; private set; } = 21;
     public int CurrentPlayerPlaying { get; private set; } = 21;
 
-    [SerializeField] int numberOfDecks = 3, maxNumberOfCards = 12;
+    [SerializeField] int numberOfDecks = 3, maxNumberOfCards = 12, numberOfPowerUps = 5;
     
     [SerializeField] Entity[] players;
     
@@ -23,12 +23,12 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
         
-        Deck = new Deck(numberOfDecks, maxNumberOfCards);
+        Deck = new Deck(numberOfDecks, maxNumberOfCards, numberOfPowerUps);
 
-        foreach (var x in players)
+        /*foreach (var x in players)
         {
             x.OnFinishRound += () => IsEndOfRound();
-        }
+        }*/
     }
     private void Start()
     {
@@ -77,13 +77,26 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log("Stop turn");
 
-            var damagedPlayers = players.Where(x=>x.CurrentCount<=BustValue).OrderBy(x => x.CurrentCount).ToArray();
-            damagedPlayers = damagedPlayers.Take(damagedPlayers.Count() - 1).ToArray();//damage the players minus the winner
+            var damagedPlayers = players
+                .Where(x=> // if busted take damage
+                {
+                    bool busted = x.CurrentCount > BustValue;
+                    
+                    if(busted)
+                        x.TakeDamage();
+                    
+                    return !busted;
+                })
+                .OrderBy(x => x.CurrentCount).ToArray();
+            if (damagedPlayers.Length > 1)
+            {
+                damagedPlayers = damagedPlayers.Take(damagedPlayers.Length - 1).ToArray();//damage the players but the winner
 
-            if(damagedPlayers.Length>0)
-                foreach (var x in damagedPlayers)
-                    x.TakeDamage();
-
+                if(damagedPlayers.Length>0)
+                    foreach (var x in damagedPlayers)
+                        x.TakeDamage();
+            }
+            
             foreach (var x in players)
                 x.OnStartRound?.Invoke();
             StartTurn();
