@@ -10,7 +10,8 @@ public class GameManager : MonoBehaviour
     public int CurrentPlayerPlaying { get; private set; } = 21;
 
     [SerializeField] int numberOfDecks = 3, maxNumberOfCards = 12, numberOfPowerUps = 5;
-    
+ 
+    [SerializeField] UIHandler uiHandler;
     [SerializeField] Entity[] players;
     
     public Deck Deck { get; private set; }
@@ -23,12 +24,17 @@ public class GameManager : MonoBehaviour
         else
             Destroy(gameObject);
         
-        Deck = new Deck(numberOfDecks, maxNumberOfCards, numberOfPowerUps);
 
-        /*foreach (var x in players)
+        for (int i = 0; i < players.Length; i++)
         {
-            x.OnFinishRound += () => IsEndOfRound();
-        }*/
+            int userIndex = i;
+            //set number of player
+            players[i].userIndex = userIndex;
+            players[i].OnStartRound += ()=>
+                uiHandler.ClearDeck(userIndex);
+        }
+        
+        Deck = new Deck(numberOfDecks, maxNumberOfCards, numberOfPowerUps, uiHandler);
     }
     private void Start()
     {
@@ -105,4 +111,7 @@ public class GameManager : MonoBehaviour
         };
         return false;
     }
+
+    public void UpdateCounter(string usersCounter, int userIndex)
+        => uiHandler.UpdateCounter(usersCounter,userIndex);
 }

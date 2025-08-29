@@ -3,8 +3,8 @@ using System;
 
 public class Entity : MonoBehaviour
 {
+    [HideInInspector] public int userIndex;  
     [Range(0,10),SerializeField]private int initialHealth;
-    
     public int CurrentHealth { get; private set; }
     public int CardsDealt { get; private set; }
     private int rewardMultiply;
@@ -46,8 +46,8 @@ public class Entity : MonoBehaviour
             IsPlaying = false;
             HasAnAs = false;
             HasTwoAs = false;
-            GetCard();
-            GetCard();
+            GetCard(canGetJoker:false);
+            GetCard(canGetJoker:false);
         };
         OnFinishRound += () =>
         {
@@ -64,12 +64,12 @@ public class Entity : MonoBehaviour
 
     }
 
-    protected virtual void GetCard()
+    protected virtual void GetCard(bool canGetJoker = true)
     {
         if(GameManager.instance==null)
             return;
         
-        var nextCard = GameManager.instance.Deck.GetCard();
+        var nextCard = GameManager.instance.Deck.GetCard(userIndex,canGetJoker);
         Debug.Log($"Cart Dealt {nextCard}");
 
         if (nextCard == 0)
@@ -77,7 +77,6 @@ public class Entity : MonoBehaviour
             Debug.Log("Hability");
             return;
         }
-        
         CurrentCount += nextCard;
         CardsDealt++;
         
@@ -91,9 +90,9 @@ public class Entity : MonoBehaviour
         }
             
         if(HasAnAs && !HasTwoAs && CurrentCount-10 <= 9)
-            Debug.Log($"{gameObject.name} hit, Value {CurrentCount-10 }/{CurrentCount/*As mechanic*/}");
+            GameManager.instance.UpdateCounter($"{CurrentCount-10 }/{CurrentCount/*As mechanic*/}",userIndex);
         else
-            Debug.Log($"{gameObject.name} hit, Value {CurrentCount }");
+            GameManager.instance.UpdateCounter($"{CurrentCount}",userIndex);
         
         if(CurrentCount == GameManager.instance.BustValue)
             Stand();

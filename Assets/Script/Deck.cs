@@ -4,38 +4,63 @@ using System.Collections.Generic;
 
 public class Deck
 {
+    private UIHandler uiHandler;
+    
     int numberOfDecks, maxNumberOfCards, numberOfPowerUps;
-    Queue<int> deck = new Queue<int>();
+    Queue<(int,int)> deck = new Queue<(int,int)>();//type of number, type of pica
 
-    public Deck(int _numberOfDecks, int _maxNumberOfCards, int _numberOfPowerUps)
+    public Deck(int _numberOfDecks, int _maxNumberOfCards, int _numberOfPowerUps,UIHandler _uiHandler)
     {
         numberOfDecks = _numberOfDecks;
         maxNumberOfCards = _maxNumberOfCards;
         numberOfPowerUps = _numberOfPowerUps;
+        uiHandler = _uiHandler;
     }
     
-    public int GetCard()
+    public int GetCard(int userIndex, bool canGetJoker = true)
     {
         if (deck.Count <= 0)
             ShuffleDeck();
-        return deck.Dequeue();
+        var card = deck.Dequeue();
+
+        if (!canGetJoker)
+        {
+            var jokers = new List<(int,int)>();
+            
+            while (card.Item1 == 0)
+            {
+                jokers.Add(card);
+                card = deck.Dequeue();
+            }
+
+            foreach (var item in jokers)
+                deck.Enqueue(item);
+        }
+        
+        uiHandler.UpdateDeck(deck.Count, card,userIndex);
+        
+        return Mathf.Clamp(card.Item1,0,10);
     }
 
     void ShuffleDeck()
     {
-        List<int> deckUnshuffled = new List<int>();
-        for (int i = 0; i < numberOfDecks * maxNumberOfCards; i++)
+        List<(int,int)> deckUnshuffled = new List<(int,int)>();
+        for (int j = 0; j < 4; j++)
         {
-            int iParsed = Mathf.Clamp(i - (i / maxNumberOfCards * maxNumberOfCards) + 1,1,10);
-            deckUnshuffled.Add(iParsed);
+            for (int i = 0; i < numberOfDecks * maxNumberOfCards; i++)
+            {
+                int iParsed = i - i / maxNumberOfCards * maxNumberOfCards+1;
+                deckUnshuffled.Add((iParsed,j));
+            }
         }
+        
         for (int i = 0; i < numberOfPowerUps; i++)
-            deckUnshuffled.Add(0);
+            deckUnshuffled.Add((0,-1));
         deck = ShuffleCards(deckUnshuffled);
     }
-    Queue<int> ShuffleCards(List<int> cards)
+    Queue<(int,int)> ShuffleCards(List<(int,int)> cards)
     {
-        var output = new Queue<int>();
+        var output = new Queue<(int,int)>();
         
         while (cards.Count > 0)
         {
