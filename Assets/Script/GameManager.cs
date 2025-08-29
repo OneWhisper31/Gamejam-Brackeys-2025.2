@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -48,8 +49,15 @@ public class GameManager : MonoBehaviour
     }
     public void PassTurn(int i = -1, bool exeStartTurn = true, bool exeFinishTurn = true)
     {
-        if(exeFinishTurn)
+        StartCoroutine(_PassTurn(i, exeStartTurn, exeFinishTurn));
+    }
+    IEnumerator _PassTurn(int i = -1, bool exeStartTurn = true, bool exeFinishTurn = true)
+    {
+        if (exeFinishTurn)
+        {
+            yield return new WaitForSecondsRealtime(.5f);
             players[CurrentPlayerPlaying].OnFinishTurn?.Invoke();
+        }
 
 
 
@@ -69,49 +77,56 @@ public class GameManager : MonoBehaviour
             else
                 CurrentPlayerPlaying = i;
 
-            
+
 
             if (exeStartTurn)
+            {
+                yield return new WaitForSecondsRealtime(.5f);
                 players[CurrentPlayerPlaying].OnStartTurn?.Invoke();
+            }
         }
-
-        
     }
     public bool IsEndOfRound()
     {
-        if(players.All(x => x.StopTurn))
+        if (players.All(x => x.StopTurn)||players.Any(x=>x.CurrentCount>BustValue))
         {
-            Debug.Log("Stop turn");
-
-            var damagedPlayers = players
-                .Where(x=> // if busted take damage
-                {
-                    bool busted = x.CurrentCount > BustValue;
-                    
-                    if(busted)
-                        x.TakeDamage();
-                    
-                    return !busted;
-                })
-                .OrderBy(x => x.CurrentCount).ToArray();
-            if (damagedPlayers.Length > 1)
-            {
-                damagedPlayers = damagedPlayers.Take(damagedPlayers.Length - 1).ToArray();//damage the players but the winner
-
-                if(damagedPlayers.Length>0)
-                    foreach (var x in damagedPlayers)
-                        x.TakeDamage();
-            }
-            
-            foreach (var x in players)
-                x.OnStartRound?.Invoke();
-            StartTurn();
-
+            StartCoroutine(EndOfRound());
             return true;
-        };
+        }
+        ;
         return false;
+    }
+    IEnumerator EndOfRound()
+    {
+        Debug.Log("Stop turn");
+        yield return new WaitForSecondsRealtime(.33f);
+        var damagedPlayers = players
+            .Where(x => // if busted take damage
+            {
+                    bool busted = x.CurrentCount > BustValue;
+
+                if (busted)
+                    x.TakeDamage();
+
+                return !busted;
+            })
+            .OrderBy(x => x.CurrentCount).ToArray();
+        if (damagedPlayers.Length > 1)
+        {
+            damagedPlayers = damagedPlayers.Take(damagedPlayers.Length - 1).ToArray();//damage the players but the winner
+
+            if (damagedPlayers.Length > 0)
+                foreach (var x in damagedPlayers)
+                    x.TakeDamage();
+        }
+        yield return new WaitForSecondsRealtime(.33f);
+        foreach (var x in players)
+            x.OnStartRound?.Invoke();
+        yield return new WaitForSecondsRealtime(.33f);
+        StartTurn();
+        
     }
 
     public void UpdateCounter(string usersCounter, int userIndex)
-        => uiHandler.UpdateCounter(usersCounter,userIndex);
+        => uiHandler.UpdateCounter(usersCounter, userIndex);
 }

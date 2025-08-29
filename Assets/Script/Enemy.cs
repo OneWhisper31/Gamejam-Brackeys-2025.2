@@ -11,14 +11,14 @@ public class Enemy : Entity
     {
 	    while (true)
 	    {
-		    if (IsPlaying)
-		    {
-			    yield return new WaitForSeconds(1f);
-			    
-			    if(Random.Range(0, 100) <= 50)
-				    GetCard();
-			    else
-				    Stand(); 
+			if (IsPlaying)
+			{
+				yield return new WaitForSeconds(1f);
+
+				if (Random.Range(0, 100) <= 50)
+					GetCard();
+				else
+					Stand();
 		    }
 		    yield return new WaitForEndOfFrame();
 	    }
