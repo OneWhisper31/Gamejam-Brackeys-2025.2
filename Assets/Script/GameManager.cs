@@ -113,7 +113,11 @@ public class GameManager : MonoBehaviour
             .OrderBy(x => x.CurrentCount).ToArray();
         if (damagedPlayers.Length > 1)
         {
-            damagedPlayers = damagedPlayers.Take(damagedPlayers.Length - 1).ToArray();//damage the players but the winner
+            var damagedPlayersCount = damagedPlayers[0].CurrentCount;
+
+            //damage the players but the winner
+            if (!(damagedPlayers.Length >= 2 && damagedPlayers.All(x=>x.CurrentCount == damagedPlayersCount)))
+                damagedPlayers = damagedPlayers.Take(damagedPlayers.Length - 1).ToArray();
 
             if (damagedPlayers.Length > 0)
                 foreach (var x in damagedPlayers)
