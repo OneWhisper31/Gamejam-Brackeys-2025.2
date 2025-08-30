@@ -34,6 +34,9 @@ public class Deck
             while (card.Item1 == 0)
             {
                 jokers.Add(card);
+
+                if (deck.Count <= 0)
+                    ShuffleDeck();
                 card = deck.Dequeue();
                 DeckPlayed.Add(card);
             }

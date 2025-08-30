@@ -388,7 +388,7 @@ MonoBehaviour:
   usersCount:
   - {fileID: 1379187644}
   - {fileID: 1814433431}
-  maxCardHolder: 12
+  maxCardHolder: 11
   cardHSprites:
   - {fileID: 1232291120, guid: 8f7e93dd295c1e54aa9ea3225ec13059, type: 3}
   - {fileID: 1985018788, guid: 8f7e93dd295c1e54aa9ea3225ec13059, type: 3}
@@ -837,7 +837,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -578.8, y: 387}
+  m_AnchoredPosition: {x: -550, y: 387}
   m_SizeDelta: {x: 100, y: 142}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &158643156
