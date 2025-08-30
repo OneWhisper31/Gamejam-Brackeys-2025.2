@@ -8,6 +8,9 @@ public class Deck
     
     int numberOfDecks, maxNumberOfCards, numberOfPowerUps;
     Queue<(int,int)> deck = new Queue<(int,int)>();//type of number, type of pica
+    public List<(int, int)> DeckPlayed { get; private set; } = new List<(int, int)>();
+    
+    public List<(int, int)> UnshuffledDeck{ get; private set; } = new List<(int, int)>();
 
     public Deck(int _numberOfDecks, int _maxNumberOfCards, int _numberOfPowerUps,UIHandler _uiHandler)
     {
@@ -22,6 +25,7 @@ public class Deck
         if (deck.Count <= 0)
             ShuffleDeck();
         var card = deck.Dequeue();
+        DeckPlayed.Add(card);
 
         if (!canGetJoker)
         {
@@ -31,10 +35,14 @@ public class Deck
             {
                 jokers.Add(card);
                 card = deck.Dequeue();
+                DeckPlayed.Add(card);
             }
 
             foreach (var item in jokers)
+            {
+                DeckPlayed.Remove(item);
                 deck.Enqueue(item);
+            }
         }
         
         uiHandler.UpdateDeck(deck.Count, card,userIndex);
@@ -44,29 +52,36 @@ public class Deck
 
     void ShuffleDeck()
     {
-        List<(int,int)> deckUnshuffled = new List<(int,int)>();
+        if (UnshuffledDeck.Count <= 0)
+            CreateUnshuffleDeck();
+        
+        deck = ShuffleCards(new List<(int,int)>(UnshuffledDeck));
+    }
+
+    void CreateUnshuffleDeck()
+    {
         for (int j = 0; j < 4; j++)
         {
             for (int i = 0; i < numberOfDecks * maxNumberOfCards; i++)
             {
                 int iParsed = i - i / maxNumberOfCards * maxNumberOfCards+1;
-                deckUnshuffled.Add((iParsed,j));
+                UnshuffledDeck.Add((iParsed,j));
             }
         }
         
         for (int i = 0; i < numberOfPowerUps; i++)
-            deckUnshuffled.Add((0,-1));
-        deck = ShuffleCards(deckUnshuffled);
+            UnshuffledDeck.Add((0,-1));
     }
     Queue<(int,int)> ShuffleCards(List<(int,int)> cards)
     {
+        var cardsTemp = new List<(int,int)>(cards);
         var output = new Queue<(int,int)>();
         
-        while (cards.Count > 0)
+        while (cardsTemp.Count > 0)
         {
-            var nChoose = Random.Range(0, cards.Count);
+            var nChoose = Random.Range(0, cardsTemp.Count);
             output.Enqueue(cards[nChoose]);
-            cards.RemoveAt(nChoose);
+            cardsTemp.RemoveAt(nChoose);
         }
         
         return output;

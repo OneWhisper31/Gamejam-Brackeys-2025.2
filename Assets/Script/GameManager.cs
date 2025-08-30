@@ -9,10 +9,13 @@ public class GameManager : MonoBehaviour
     [field:SerializeField] public int BustValue { get; private set; } = 21;
     public int CurrentPlayerPlaying { get; private set; } = 21;
 
-    [SerializeField] int numberOfDecks = 3, maxNumberOfCards = 12, numberOfPowerUps = 5;
+    [field: SerializeField] public int NumberOfDecks { get; private set; } = 3;
+    [field: SerializeField] public int MaxNumberOfCards { get; private set; } = 12;
+    [field:SerializeField] public int NumberOfPowerUps { get; private set; } = 5;
  
+    [field:SerializeField] public Entity[] Players { get; private set; }
+    
     [SerializeField] UIHandler uiHandler;
-    [SerializeField] Entity[] players;
     
     public Deck Deck { get; private set; }
     public static GameManager instance;
@@ -25,16 +28,16 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         
 
-        for (int i = 0; i < players.Length; i++)
+        for (int i = 0; i < Players.Length; i++)
         {
             int userIndex = i;
             //set number of player
-            players[i].userIndex = userIndex;
-            players[i].OnStartRound += ()=>
+            Players[i].userIndex = userIndex;
+            Players[i].OnStartRound += ()=>
                 uiHandler.ClearDeck(userIndex);
         }
         
-        Deck = new Deck(numberOfDecks, maxNumberOfCards, numberOfPowerUps, uiHandler);
+        Deck = new Deck(NumberOfDecks, MaxNumberOfCards, NumberOfPowerUps, uiHandler);
     }
     private void Start()
     {
@@ -42,14 +45,14 @@ public class GameManager : MonoBehaviour
     }
     public void StartTurn()
     {
-        CurrentPlayerPlaying = Random.Range(0, players.Length);
+        CurrentPlayerPlaying = Random.Range(0, Players.Length);
         Debug.Log("Start Turn");
         PassTurn(CurrentPlayerPlaying);
     }
     public void PassTurn(int i = -1, bool exeStartTurn = true, bool exeFinishTurn = true)
     {
         if(exeFinishTurn)
-            players[CurrentPlayerPlaying].OnFinishTurn?.Invoke();
+            Players[CurrentPlayerPlaying].OnFinishTurn?.Invoke();
 
 
 
@@ -61,10 +64,10 @@ public class GameManager : MonoBehaviour
                 {
                     CurrentPlayerPlaying++;
 
-                    if (CurrentPlayerPlaying >= players.Length)
+                    if (CurrentPlayerPlaying >= Players.Length)
                         CurrentPlayerPlaying = 0;
 
-                } while (players[CurrentPlayerPlaying].StopTurn);
+                } while (Players[CurrentPlayerPlaying].StopTurn);
             }
             else
                 CurrentPlayerPlaying = i;
@@ -72,18 +75,18 @@ public class GameManager : MonoBehaviour
             
 
             if (exeStartTurn)
-                players[CurrentPlayerPlaying].OnStartTurn?.Invoke();
+                Players[CurrentPlayerPlaying].OnStartTurn?.Invoke();
         }
 
         
     }
     public bool IsEndOfRound()
     {
-        if(players.All(x => x.StopTurn))
+        if(Players.All(x => x.StopTurn))
         {
             Debug.Log("Stop turn");
 
-            var damagedPlayers = players
+            var damagedPlayers = Players
                 .Where(x=> // if busted take damage
                 {
                     bool busted = x.CurrentCount > BustValue;
@@ -103,7 +106,7 @@ public class GameManager : MonoBehaviour
                         x.TakeDamage();
             }
             
-            foreach (var x in players)
+            foreach (var x in Players)
                 x.OnStartRound?.Invoke();
             StartTurn();
 

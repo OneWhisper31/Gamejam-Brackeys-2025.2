@@ -1604,13 +1604,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   <BustValue>k__BackingField: 21
-  numberOfDecks: 2
-  maxNumberOfCards: 12
-  numberOfPowerUps: 5
-  uiHandler: {fileID: 24643266}
-  players:
+  <NumberOfDecks>k__BackingField: 3
+  <MaxNumberOfCards>k__BackingField: 12
+  <NumberOfPowerUps>k__BackingField: 5
+  <Players>k__BackingField:
   - {fileID: 606073086}
   - {fileID: 1225438890}
+  uiHandler: {fileID: 24643266}
 --- !u!1 &526887617
 GameObject:
   m_ObjectHideFlags: 0
